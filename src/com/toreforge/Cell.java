@@ -5,5 +5,17 @@ public enum Cell {
     BARIER,
     FRUIT,
     BODY,
-    HEAD
+    HEAD;
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case BODY: return "B";
+            case HEAD: return "H";
+            case EMPTY: return " ";
+            case FRUIT: return "O";
+            case BARIER: return "X";
+        }
+        return null;
+    }
 }

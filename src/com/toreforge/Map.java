@@ -3,10 +3,7 @@ package com.toreforge;
 import com.toreforge.exception.InvalidInputFileException;
 import com.toreforge.exception.InvalidMapException;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 public class Map {
@@ -60,6 +57,19 @@ public class Map {
                 case 'H': rows.get(height).addCell(position, Cell.HEAD); break;
                 default: throw new InvalidMapException();
             }
+            position++;
         }
+    }
+
+    public void outputMap() throws IOException, InvalidMapException {
+        File output = new File("output.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(output));
+        for (int row = 0; row < rows.size(); row++) {
+            for (int column = 0; column < width; column++) {
+                writer.write(rows.get(row).getCell(column).toString());
+            }
+            writer.newLine();
+        }
+        writer.close();
     }
 }
