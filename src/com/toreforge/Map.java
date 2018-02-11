@@ -9,29 +9,39 @@ import java.util.HashMap;
 public class Map {
     private Integer width;
     private Integer height;
-    private HashMap<Integer, Row> rows;
+    private HashMap<Integer, Row> rows = new HashMap<>();
+    private Direction direction;
 
-    public Map(String filename) {
-        load(filename);
+    public Map() {
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 
     public void load(String filename) {
         try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            StringBuilder sb = new StringBuilder();
             String line = br.readLine();
+
+            if (line.length() != 1)
+                throw new InvalidInputFileException();
+
+            direction = Direction.fromString(line);
+
+            line = br.readLine();
 
             while (line != null) {
                 processLine(line);
                 line = br.readLine();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Input file not found.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("I/O Error.");
         } catch (InvalidMapException e) {
-            e.printStackTrace();
+            System.out.println("Provided map is not valid.");
         } catch (InvalidInputFileException e) {
-            e.printStackTrace();
+            System.out.println("Input file is not valid.");
         }
     }
 
@@ -40,7 +50,7 @@ public class Map {
             height = 0;
         else
             height++;
-        char[] chars = line.toCharArray();
+        char[] chars = line.toUpperCase().toCharArray();
         if (width == null)
             width = chars.length;
         if (width != chars.length)
